@@ -49,7 +49,7 @@ public class OneAndHalf extends AutonomousBase {
             
             case lowerArm:
                 if (components.frontLimitSensor.get() == false) {
-                    components.raisingMotor.set(ControlMode.PercentOutput, -0.5);
+                    components.raisingMotor.set(ControlMode.PercentOutput, 0.5);
                 } else {
                     components.raisingMotor.set(0);
                     System.out.println("The following state is over: " + currentState);
@@ -78,7 +78,7 @@ public class OneAndHalf extends AutonomousBase {
 
             case raiseArm:
             if (!components.backLimitSensor.get()) {
-                components.raisingMotor.set(ControlMode.PercentOutput, 0.45);
+                components.raisingMotor.set(ControlMode.PercentOutput, -0.45);
                 System.out.println("The following state is over: " + currentState);
             }else{
                     components.raisingMotor.set(ControlMode.PercentOutput, 0);

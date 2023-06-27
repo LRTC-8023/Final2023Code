@@ -14,6 +14,7 @@ import frc.robot.autonomous.DepositAndDriveForward;
 import frc.robot.autonomous.DepositCube;
 import frc.robot.autonomous.DoNothing;
 import frc.robot.autonomous.OneAndHalf;
+import frc.robot.autonomous.PIDDepositAndBalance;
 import frc.robot.autonomous.TwoCubeAuto;
 import frc.robot.autonomous.twoCubeBalance;
  
@@ -23,12 +24,11 @@ public class Robot extends TimedRobot {
     private static final String kDepositAndDriveForward = "Mobility";
     private static final String kDepositAndBalance = "Deposit & Balance";
     private static final String kDepositCube = "Deposit Cube";
-      
+    private static final String kPIDBalance = "PID Balance";
+
     private static final String kOneAndHalf = "One And Half";
     private static final String kTwoCubeAuto = "Two Cube Auto";
     private static final String ktwoCubeBalance = "Two Cube & Balance";
-    private static final String kDepositSensor = "Deposit Sensor";
-    private static final String kRaiseArm = "Raise Arm";
     
     private final SendableChooser<String> auto_chooser = new SendableChooser<>();
     private Components components = new Components();
@@ -41,16 +41,12 @@ public class Robot extends TimedRobot {
     auto_chooser.addOption("Deposit Cube", kDepositCube);
     auto_chooser.addOption("Mobility", kDepositAndDriveForward);
     auto_chooser.addOption("Deposit & Balance", kDepositAndBalance);
+    auto_chooser.addOption("PID Balance", kPIDBalance);
 
     auto_chooser.addOption("Two Cube Auto", kTwoCubeAuto);
     auto_chooser.addOption("One And Half", kOneAndHalf);
-    auto_chooser.addOption("Two Cube & Balance", 
-    
-    
-    
-    ktwoCubeBalance);
-    auto_chooser.addOption("DeositSensor", kDepositSensor);
-    auto_chooser.addOption("Raise Arm", kRaiseArm);
+    auto_chooser.addOption("Two Cube & Balance", ktwoCubeBalance);
+
 
 
     SmartDashboard.putData("Auto choices", auto_chooser);
@@ -82,12 +78,15 @@ public class Robot extends TimedRobot {
             case kTwoCubeAuto:
                 autonomous = new TwoCubeAuto(components);
             break;
+            case kPIDBalance:
+              autonomous = new PIDDepositAndBalance(components);
+            break;
             case kOneAndHalf:
                 autonomous = new OneAndHalf(components);
             break;
-            case ktwoCubeBalance:
-                autonomous = new twoCubeBalance(components);
-            break;
+            // case ktwoCubeBalance:
+            //     autonomous = new twoCubeBalance(components);
+            // break;
             case kDefaultAuto:
                 autonomous = new DoNothing(components);
             break;
@@ -123,7 +122,7 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         // drive controls
         double Speed = -components.driveController.getRawAxis(1) * 0.9; // for this axis: up is negative, down is positive
-        double turn = -components.driveController.getRawAxis(4) * 0.6;
+        double turn = -components.driveController.getRawAxis(4) * 0.44;
         double vAngleTest = components.gyro.getYComplementaryAngle();
         vAngleTest = vAngleTest * -1; // rio is mounted backwards
 
@@ -165,7 +164,7 @@ public class Robot extends TimedRobot {
         }
 
         if ((raisingPower < 0 && !components.frontLimitSensor.get()) || (raisingPower > 0 && !components.backLimitSensor.get())) {
-          components.raisingMotor.set(raisingPower * 0.6);
+          components.raisingMotor.set(raisingPower * -0.6);
         } else {
           components.raisingMotor.set(0);
         }
