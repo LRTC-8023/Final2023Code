@@ -13,7 +13,7 @@ public class DepositAndDriveForward extends AutonomousBase {
         super.periodic();
 
         if (this.currentTime - this.startTime < 1) {
-            components.rollerMotor.set(this.targetRollerSpeed);
+            components.rollerMotor.set(1);
         } else {
             components.rollerMotor.set(0);
         }

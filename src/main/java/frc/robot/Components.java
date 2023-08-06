@@ -11,8 +11,6 @@ import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Components {
     
@@ -21,10 +19,10 @@ public class Components {
     public XboxController intakeController = new XboxController(Constants.drivingConstants.intakeController);
 
     // Driving Motors 
-    public CANSparkMax leftFrontMotor = new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless);
-    public CANSparkMax leftBackMotor = new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless);
-    public CANSparkMax rightFrontMotor = new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless);
-    public CANSparkMax rightBackMotor = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
+    public CANSparkMax leftFrontMotor = new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless);
+    public CANSparkMax leftBackMotor = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
+    public CANSparkMax rightFrontMotor = new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless);
+    public CANSparkMax rightBackMotor = new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless);
 
     public RelativeEncoder leftEncoder = leftFrontMotor.getEncoder();
     public RelativeEncoder rightEncoder = rightFrontMotor.getEncoder();
@@ -48,16 +46,7 @@ public class Components {
     //camera
     public UsbCamera camera = CameraServer.startAutomaticCapture(0);
     
-    //autonmous stuff
-    public static final String kLow = "Low";
-    public static final String kMid = "Mid";
-    public final SendableChooser<String> targetChooser = new SendableChooser<>();
-
     public void init() {
-        //autonmous stuff
-        targetChooser.addOption("Low", kLow);
-        targetChooser.addOption("Middle", kMid);
-        SmartDashboard.putData("Target Choices", targetChooser);
 
         camera.setResolution(400, 222);
 
