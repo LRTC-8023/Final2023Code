@@ -8,15 +8,27 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.autonomous.AutonomousBase;
+import frc.robot.autonomous.DepositAndBalance;
 import frc.robot.autonomous.DepositAndDriveForward;
+import frc.robot.autonomous.DepositCube;
 import frc.robot.autonomous.DoNothing;
-
+import frc.robot.autonomous.OneAndHalf;
+import frc.robot.autonomous.PIDDepositAndBalance;
+import frc.robot.autonomous.TwoCubeAuto;
+import frc.robot.autonomous.twoCubeBalance;
  
 public class Robot extends TimedRobot {
     // Auto Selection:
     private static final String kDefaultAuto = "Nothing Auto";
     private static final String kDepositAndDriveForward = "Mobility";
-  
+    private static final String kDepositAndBalance = "Deposit & Balance";
+    private static final String kDepositCube = "Deposit Cube";
+    private static final String kPIDBalance = "PID Balance";
+
+    private static final String kOneAndHalf = "One And Half";
+    private static final String kTwoCubeAuto = "Two Cube Auto";
+    private static final String ktwoCubeBalance = "Two Cube & Balance";
+    
     private final SendableChooser<String> auto_chooser = new SendableChooser<>();
     private Components components = new Components();
     private AutonomousBase autonomous;
@@ -25,7 +37,17 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Auto Selection:
     auto_chooser.setDefaultOption("Nothing Auto", kDefaultAuto);
+    auto_chooser.addOption("Deposit Cube", kDepositCube);
     auto_chooser.addOption("Mobility", kDepositAndDriveForward);
+    auto_chooser.addOption("Deposit & Balance", kDepositAndBalance);
+    auto_chooser.addOption("PID Balance", kPIDBalance);
+
+    auto_chooser.addOption("Two Cube Auto", kTwoCubeAuto);
+    auto_chooser.addOption("One And Half", kOneAndHalf);
+    auto_chooser.addOption("Two Cube & Balance", ktwoCubeBalance);
+
+
+
     SmartDashboard.putData("Auto choices", auto_chooser);
     
     // all components inilizations are in the components.java file  
@@ -34,6 +56,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putBoolean("frontLimitSenosr", components.frontLimitSensor.get());
+    SmartDashboard.putBoolean("backLimitSensor", components.backLimitSensor.get());
+    SmartDashboard.putBoolean("CubeSensor", components.cubeSensor.get());
   }
 
   @Override
@@ -43,6 +68,24 @@ public class Robot extends TimedRobot {
             case kDepositAndDriveForward:
                 autonomous = new DepositAndDriveForward(components);
             break;
+            case kDepositAndBalance:
+                autonomous = new DepositAndBalance(components);
+            break;
+            case kDepositCube:
+                autonomous = new DepositCube(components);
+            break;
+            case kTwoCubeAuto:
+                autonomous = new TwoCubeAuto(components);
+            break;
+            case kPIDBalance:
+              autonomous = new PIDDepositAndBalance(components);
+            break;
+            case kOneAndHalf:
+                autonomous = new OneAndHalf(components);
+            break;
+            // case ktwoCubeBalance:
+            //     autonomous = new twoCubeBalance(components);
+            // break;
             case kDefaultAuto:
                 autonomous = new DoNothing(components);
             break;
